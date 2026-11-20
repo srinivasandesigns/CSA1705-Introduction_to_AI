@@ -1,0 +1,49 @@
+# Map Colouring using Backtracking
+
+def map_coloring(graph, colors):
+    result = {}
+
+    def is_safe(node, color):
+        for neighbor in graph[node]:
+            if result.get(neighbor) == color:
+                return False
+        return True
+
+    def solve(nodes):
+        if not nodes:
+            return True
+
+        node = nodes[0]
+
+        for color in colors:
+            if is_safe(node, color):
+                result[node] = color
+
+                if solve(nodes[1:]):
+                    return True
+
+                del result[node]
+
+        return False
+
+    if solve(list(graph.keys())):
+        return result
+
+    return None
+
+
+graph = {
+    'A': ['B', 'C'],
+    'B': ['A', 'C', 'D'],
+    'C': ['A', 'B', 'D'],
+    'D': ['B', 'C']
+}
+
+colors = ['Red', 'Green', 'Blue']
+result = map_coloring(graph, colors)
+
+if result:
+    for node, color in result.items():
+        print(node, ":", color)
+else:
+    print("No solution exists")
