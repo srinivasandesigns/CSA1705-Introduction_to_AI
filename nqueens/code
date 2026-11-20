@@ -1,0 +1,40 @@
+# N-Queens using Backtracking
+
+def solve_n_queens(n):
+    board = [-1] * n
+
+    def solve(row):
+        if row == n:
+            return True
+
+        for col in range(n):
+            safe = True
+
+            for prev in range(row):
+                if (board[prev] == col or
+                    abs(board[prev] - col) == row - prev):
+                    safe = False
+                    break
+
+            if safe:
+                board[row] = col
+
+                if solve(row + 1):
+                    return True
+
+                board[row] = -1
+
+        return False
+
+    if solve(0):
+        for row in range(n):
+            print(" ".join(
+                "Q" if board[row] == col else "."
+                for col in range(n)
+            ))
+    else:
+        print("No solution exists")
+
+
+n = int(input("Enter number of queens: "))
+solve_n_queens(n)
